@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && apt-get install -y \
+  dumb-init \
   dante-server \
   stunnel4 && \
 # Clean up apt cache
@@ -13,4 +14,5 @@ COPY ./proxyTLS.conf /etc/stunnel/proxyTLS.conf
 COPY ./init.sh /opt/init.sh
 
 EXPOSE 1080
-ENTRYPOINT ["/opt/init.sh"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["/opt/init.sh"]

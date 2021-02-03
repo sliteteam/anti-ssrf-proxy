@@ -1,5 +1,11 @@
 #!/bin/bash
 
 echo "proxy_username:$PASSWORD" | chpasswd
-/etc/init.d/stunnel4 start
+if [ "$TLS" = "true" ]
+then
+  /etc/init.d/stunnel4 start
+  sed -i 's/# TLS //g' /etc/danted.conf
+else
+  sed -i 's/# NOTLS //g' /etc/danted.conf
+fi
 /usr/sbin/danted

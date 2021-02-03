@@ -7,7 +7,7 @@ function protected(options) {
     host: '172.17.0.2',
     userId: 'proxy_username',
     password: 'password',
-    tls: true,
+    tls: process.env.TLS === 'true',
   }
   return {
     ...options,
@@ -57,7 +57,12 @@ const server = app.listen(port, async () => {
       })
     )
   } catch(e) {
-    console.log(e.message)
+    if(e.message === 'Socks5 proxy rejected connection - NotAllowed') {
+      console.log(`Can't get internal request with protection: ${e.message}`)
+    } else {
+      console.log("Something's wrong")
+      throw e
+    }
   }
   server.close()
 })
