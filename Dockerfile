@@ -2,6 +2,7 @@ FROM ubuntu:20.04
 
 RUN apt-get update && apt-get install -y \
   dumb-init \
+  curl \
   dante-server \
   stunnel4 && \
 # Clean up apt cache
