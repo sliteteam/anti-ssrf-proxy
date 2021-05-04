@@ -13,7 +13,13 @@ Create self-signed certificate:
 
 Run anti-ssrf-proxy
 
-`docker run --rm -d -e PASSWORD=password -v $(pwd)/test/ssl-cert-snakeoil.key:/opt/stunnel/privkey.pem -v $(pwd)/test/ssl-cert-snakeoil.pem:/opt/stunnel/fullchain.pem -p 1080:1080 anti-ssrf-proxy:latest`
+Proxy username is `proxy_username` password is configurable via `PASSWORD` env variable
+
+If you want wrapped TLS add `TLS=true` env
+
+If you want to disable authentication then use `AUTH=false`
+
+`docker run --rm -d -e PASSWORD=password -e TLS=true -v $(pwd)/test/ssl-cert-snakeoil.key:/opt/stunnel/privkey.pem -v $(pwd)/test/ssl-cert-snakeoil.pem:/opt/stunnel/fullchain.pem -p 1080:1080 sliteteam/anti-ssrf-proxy:latest`
 
 ```
 cd test
@@ -28,4 +34,10 @@ Express listening at http://127.0.0.1:8888
 Can get internal request without protection: {"ok":true}
 Can get githubstatus with protection: All Systems Operational
 Socks5 proxy rejected connection - NotAllowed
+```
+
+You can also try it using curl:
+
+```
+curl -x socks5://proxy_username:password@127.0.0.1:1080
 ```
